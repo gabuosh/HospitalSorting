@@ -11,6 +11,6 @@ package hospitalsorting;
 public enum MenuOption {
     Sort,
     Search,
-    AddRecord,
+    Add_Record,
     Exit
 }

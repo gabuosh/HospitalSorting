@@ -11,12 +11,12 @@ package hospitalsorting;
 public enum EmployeeRole {
     Doctor,
     Nurse,
-    NursingSisters,
+    Nursing_Sisters,
     Midwives,
-    ClericalStaff,
-    SimpleSupportStaff,
+    Clerical_Staff,
+    Simple_Support_Staff,
     Clerks,
-    ParamedicalStaff,
-    SupportStaffParamedical
+    Paramedical_Staff,
+    Support_Staff_Paramedical
     
 }

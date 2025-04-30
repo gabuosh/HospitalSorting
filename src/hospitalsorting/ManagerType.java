@@ -10,9 +10,9 @@ package hospitalsorting;
  */
 public enum ManagerType {
     Director,
-    SeniorMedicalOfficer,
+    Senior_Medical_Officer,
     Matron,
-    AdministrativeOfficer,
+    Administrative_Officer,
     Accountant,
-    ChiefPharmacist
+    Chief_Pharmacist
 }
