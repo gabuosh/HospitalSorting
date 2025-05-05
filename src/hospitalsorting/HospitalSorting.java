@@ -1,6 +1,7 @@
 package hospitalsorting;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 //@author zzanoni
 
 public class HospitalSorting {
@@ -22,8 +23,16 @@ public class HospitalSorting {
             switch(MenuOption.values()[choice - 1]){
                 
                 case Add_Record:
+                    int id = 100 + new Random().nextInt(900);
+                    
                     System.out.println("\n Enter employee name: ");
                     String name = sc.nextLine();
+                    
+                    System.out.println("\n Enter employee email: - in format abc@domain.com");
+                    String email = sc.nextLine();
+                    
+                    System.out.println("\n Enter employee gender: - Male/Female");
+                    String gender = sc.nextLine();
                     
                     //select employee role
                     System.out.println("Select a role for the employee: ");
@@ -51,9 +60,9 @@ public class HospitalSorting {
                     int managerChoice = sc.nextInt();
                     sc.nextLine();
                     ManagerType managertype = ManagerType.values()[managerChoice - 1];
-        
+                    
                     //create and store new employee
-                    Employee newEmployee = new Employee(name, managertype, departmenttype, employeerole);
+                    Employee newEmployee = new Employee(name, managertype, departmenttype, employeerole, id, email, gender);
                     employees.add(newEmployee);
         
                     System.out.println("Employee added successfully: " + newEmployee + "\n");
