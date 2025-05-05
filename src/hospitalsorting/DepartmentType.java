@@ -9,6 +9,7 @@ package hospitalsorting;
  * @author zzano
  */
 public enum DepartmentType {
+    General,
     Anesthetics,
     Cardiology,
     ENT, //ear, nose and throat

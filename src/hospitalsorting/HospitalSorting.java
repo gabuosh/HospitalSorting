@@ -60,7 +60,15 @@ public class HospitalSorting {
                     break;
                     
                 case Sort:
-                    System.out.println("Sort not implemented yet...");
+                    if (employees.isEmpty()){
+                        System.out.println("No employees to be sorted.");
+                    } else {
+                        Sorter.sort(employees, employees.size());
+                        System.out.println("Employees sorted aphabetically by name: \n");
+                        for (int i = 0; i < Math.min(20, employees.size()); i++){
+                            System.out.println(employees.get(i));
+                        }
+                    }
                     break;
                     
                 case Search:
