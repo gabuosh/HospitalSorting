@@ -72,7 +72,22 @@ public class HospitalSorting {
                     break;
                     
                 case Search:
-                    System.out.println("Sort not implemented yet...");
+                    if (employees.isEmpty()){
+                        System.out.println("Employee list is empty. Please add or generate employees first.");
+                        break;
+                    }
+                    
+                    System.out.println("Enter the employee's name to search for: ");
+                    String searchName = sc.nextLine();
+                    
+                    //Binary search - list must be sorted first
+                    Employee found = BinarySearch.searchByName(employees, searchName, 0, employees.size()-1);
+                    
+                    if (found != null){
+                        System.out.println("Employee found:\n" + found);
+                    } else {
+                        System.out.println("No employee records with name: " + searchName);
+                    }
                     break;
                     
                 case Exit:
