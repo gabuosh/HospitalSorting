@@ -1,5 +1,6 @@
 package hospitalsorting;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
 //@author zzanoni
@@ -99,13 +100,21 @@ public class HospitalSorting {
                     }
                     break;
                     
+                case Random_Generate_Records:
+                    List<RandomEmployee> randoms = UserDataGenerator.generateUserList(20);
+                    for(RandomEmployee r : randoms){
+                        employees.add(UserDataGenerator.convertToEmployee(r));
+                    }
+                    
+                    System.out.println("20 random employees generated and added successfully. \n");
+                    break;
+                    
                 case Exit:
                     running = false;
                     System.out.println("Exiting program... ");
                     break;
             }
         }
-        
 
     }
     

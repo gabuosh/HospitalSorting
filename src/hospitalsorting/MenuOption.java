@@ -12,5 +12,6 @@ public enum MenuOption {
     Sort,
     Search,
     Add_Record,
+    Random_Generate_Records,
     Exit
 }

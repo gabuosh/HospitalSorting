@@ -55,4 +55,15 @@ public class UserDataGenerator {
         List<RandomEmployee> users = generateUserList(20); //generate 20 users
         writeUsersToCSV(users, "random_users.csv"); //Save to CSV file
     }
+    
+    public static Employee convertToEmployee(RandomEmployee rand){
+    String fullName = rand.getFirstName() + " " + rand.getLastName();
+    
+    //random values
+    ManagerType manager = ManagerType.values()[random.nextInt(ManagerType.values().length)];
+    DepartmentType department = DepartmentType.values()[random.nextInt(DepartmentType.values().length)];
+    EmployeeRole role = EmployeeRole.values()[random.nextInt(EmployeeRole.values().length)];
+        
+    return new Employee(fullName, manager, department, role, rand.getId(), rand.getEmail(), rand.getGender());
+    }
 }

@@ -54,10 +54,10 @@ public class Employee {
     public void setEmployeeRole(EmployeeRole employeerole){
         this.employeerole = employeerole;
     }
-    public int getid(){
+    public int getId(){
         return id;
     }
-    public void setid(int id){
+    public void setId(int id){
         this.id = id;
     }
     public String getEmail(){
@@ -76,5 +76,5 @@ public class Employee {
     public String toString(){
         return name + " (" + employeerole + ") - " + departmenttype + " - Manager: " + managertype;
     }
-        
+          
 }

@@ -20,6 +20,22 @@ public class RandomEmployee {
         this.gender = gender;
     }
     
+    public String getFirstName(){
+        return firstName;
+    }
+    public String getLastName(){
+        return lastName;
+    }
+    public int getId(){
+        return id;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public String getGender(){
+        return gender;
+    }
+    
     public String toCSV(){
         return id + "," + firstName + "," + lastName + "," + email + "," + gender;
     }
