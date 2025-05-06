@@ -1,4 +1,6 @@
 package hospitalsorting;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,4 +68,76 @@ public class UserDataGenerator {
         
     return new Employee(fullName, manager, department, role, rand.getId(), rand.getEmail(), rand.getGender());
     }
+    
+    public static List<Employee> loadFromApplicantsFile(String filename){
+        List<Employee> loadedEmployees = new ArrayList<>();
+        Random rand = new Random();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))){
+            String line = reader.readLine();
+            
+            while ((line = reader.readLine()) != null){
+                List<String> parts = parseCSVLine(line);
+                if (parts.size() < 9) continue; //skips malformed on loading CSV file
+                
+                String firstName = parts.get(0);
+                String lastName = parts.get(1);
+                String gender = parts.get(2);
+                String email = parts.get(3);
+                String departmentRaw = parts.get(4);
+                String positionRaw = parts.get(5);
+                
+                String fullName = firstName + " " + lastName;
+                int id = 100 + rand.nextInt(900);
+                
+                //Try to map DepartmentType and ManagerType
+                DepartmentType department;
+                try{
+                    department = DepartmentType.valueOf(departmentRaw.replace(" ", "_").toUpperCase());
+                }catch(Exception e){
+                    department = DepartmentType.General; //just put in general department
+                }
+                
+                ManagerType manager;
+                try{
+                   manager = ManagerType.valueOf(positionRaw.replace("-", "_").toUpperCase());
+                }catch (Exception e){
+                    manager = ManagerType.Director; //just reports to Director
+                }
+                
+                //Pick random role for employee
+                EmployeeRole role = EmployeeRole.values()[rand.nextInt(EmployeeRole.values().length)];
+                
+                Employee emp = new Employee(fullName, manager, department, role, id, email, gender);
+                loadedEmployees.add(emp);
+            }
+        } catch(IOException e){
+            System.out.println("Error reading aplicants file");
+            e.printStackTrace();
+        }
+        return loadedEmployees;
+    }
+    //CSV line parser
+    public static List<String> parseCSVLine(String line){
+        List<String> result = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean insideQuotes = false;
+        
+        for (int i = 0; i<line.length(); i++){
+            char c = line.charAt(i);
+            
+            if (c == '"'){
+                insideQuotes = !insideQuotes; //toggle quoted section
+            } else if (c == ',' && !insideQuotes){
+                result.add(sb.toString().trim());
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        result.add(sb.toString().trim()); //add last field
+        return result;
+    }
 }
+
+

@@ -109,6 +109,13 @@ public class HospitalSorting {
                     System.out.println("20 random employees generated and added successfully. \n");
                     break;
                     
+                case Load_From_File:
+                    System.out.println("Loading employees from Applicants_Form.txt");
+                    List<Employee> loaded = UserDataGenerator.loadFromApplicantsFile("Applicants_Form.txt");
+                    employees.addAll(loaded);
+                    System.out.println(loaded.size() + " employees loaded from applicants file. \n");
+                    break;
+                    
                 case Exit:
                     running = false;
                     System.out.println("Exiting program... ");
