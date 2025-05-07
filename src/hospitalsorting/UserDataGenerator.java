@@ -9,6 +9,8 @@ import java.util.Random;
 /**
  *
  * @author zzano
+ * Class will generate random user data, convert that into object RandomEmployee and then to Employee,
+ * export to a CSV file and use them in main app
  */
 public class UserDataGenerator {
     
@@ -60,26 +62,67 @@ public class UserDataGenerator {
     
     public static Employee convertToEmployee(RandomEmployee rand){
     String fullName = rand.getFirstName() + " " + rand.getLastName();
-    
-    //random values
-    ManagerType manager = ManagerType.values()[random.nextInt(ManagerType.values().length)];
-    DepartmentType department = DepartmentType.values()[random.nextInt(DepartmentType.values().length)];
+    //assign random values for role
     EmployeeRole role = EmployeeRole.values()[random.nextInt(EmployeeRole.values().length)];
-        
+    
+    //assign random manager depending on employee role
+    ManagerType manager;
+    switch (role){
+        case Doctor:
+            manager = random.nextBoolean() ? ManagerType.Director : ManagerType.Senior_Medical_Officer;
+            break;
+        case Nurse:
+        case Nursing_Sisters:
+        case Midwives:
+            manager = random.nextBoolean() ? ManagerType.Matron : ManagerType.Chief_Pharmacist;
+            break;
+        case Clerical_Staff:
+        case Simple_Support_Staff:
+            manager = ManagerType.Administrative_Officer;
+            break;
+        case Clerks:
+            manager = ManagerType.Accountant;
+            break;
+        case Paramedical_Staff:
+        case Support_Staff_Paramedical:
+            manager = random.nextBoolean() ? ManagerType.Senior_Medical_Officer : ManagerType.Matron;
+            break;
+        default:
+            manager = ManagerType.Director; //if it fails it will report to director
+            break;
+    }
+    //assign DepartmentType based on role
+    DepartmentType department;
+    switch (role){
+        case Clerical_Staff:
+        case Simple_Support_Staff:
+        case Clerks:
+            department = DepartmentType.General;
+            break;
+        default:
+            department = DepartmentType.values()[random.nextInt(DepartmentType.values().length)];
+            break;
+    }
+    
     return new Employee(fullName, manager, department, role, rand.getId(), rand.getEmail(), rand.getGender());
     }
     
+    /** method to take the filename (CSV file path),
+    *   parse line by line, builds object employee from each valid row,
+    *   returns a list<Employee> containing all created employees
+    */
     public static List<Employee> loadFromApplicantsFile(String filename){
-        List<Employee> loadedEmployees = new ArrayList<>();
-        Random rand = new Random();
+        List<Employee> loadedEmployees = new ArrayList<>(); //loadedEmployees holds created employees
+        Random rand = new Random(); //rand generates random id and role
         
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))){
-            String line = reader.readLine();
+            String line = reader.readLine(); //skips reading the header/column names
             
             while ((line = reader.readLine()) != null){
-                List<String> parts = parseCSVLine(line);
+                List<String> parts = parseCSVLine(line); //uses parseCSVline() to split lines into fields
                 if (parts.size() < 9) continue; //skips malformed on loading CSV file
                 
+                //puts in columns
                 String firstName = parts.get(0);
                 String lastName = parts.get(1);
                 String gender = parts.get(2);
@@ -87,29 +130,29 @@ public class UserDataGenerator {
                 String departmentRaw = parts.get(4);
                 String positionRaw = parts.get(5);
                 
-                String fullName = firstName + " " + lastName;
+                String fullName = firstName + " " + lastName; //constructs full name, class employee has only one name variable
                 int id = 100 + rand.nextInt(900);
                 
                 //Try to map DepartmentType and ManagerType
                 DepartmentType department;
                 try{
-                    department = DepartmentType.valueOf(departmentRaw.replace(" ", "_").toUpperCase());
+                    department = DepartmentType.valueOf(departmentRaw.replace(" ", "_").toUpperCase()); //convert string to enum
                 }catch(Exception e){
-                    department = DepartmentType.General; //just put in general department
+                    department = DepartmentType.General; //if it fails, just put in general department
                 }
                 
                 ManagerType manager;
                 try{
-                   manager = ManagerType.valueOf(positionRaw.replace("-", "_").toUpperCase());
+                   manager = ManagerType.valueOf(positionRaw.replace("-", "_").toUpperCase()); //convert string to enum
                 }catch (Exception e){
-                    manager = ManagerType.Director; //just reports to Director
+                    manager = ManagerType.Director; //if it fails, just reports to Director
                 }
                 
-                //Pick random role for employee
+                //Pick random role for employee based on employeerole enum
                 EmployeeRole role = EmployeeRole.values()[rand.nextInt(EmployeeRole.values().length)];
                 
-                Employee emp = new Employee(fullName, manager, department, role, id, email, gender);
-                loadedEmployees.add(emp);
+                Employee emp = new Employee(fullName, manager, department, role, id, email, gender); //constructs object employee with generated info
+                loadedEmployees.add(emp); //adds to the list loadedEmployees
             }
         } catch(IOException e){
             System.out.println("Error reading aplicants file");
@@ -119,9 +162,9 @@ public class UserDataGenerator {
     }
     //CSV line parser
     public static List<String> parseCSVLine(String line){
-        List<String> result = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        boolean insideQuotes = false;
+        List<String> result = new ArrayList<>(); //result stores parsed values from the line
+        StringBuilder sb = new StringBuilder(); //sb builds characters for the current field
+        boolean insideQuotes = false; //insideQuotes tracks whether we're inside "quoted" CSV sections
         
         for (int i = 0; i<line.length(); i++){
             char c = line.charAt(i);
