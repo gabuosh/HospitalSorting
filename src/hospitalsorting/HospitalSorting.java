@@ -27,13 +27,13 @@ public class HospitalSorting {
                     int id = 100 + new Random().nextInt(900);
                     
                     System.out.println("\n Enter employee name: ");
-                    String name = sc.nextLine();
+                    String name = Validator.getValidatedName(sc);
                     
                     System.out.println("\n Enter employee email: - in format abc@domain.com");
-                    String email = sc.nextLine();
+                    String email = Validator.getValidatedEmail(sc);
                     
                     System.out.println("\n Enter employee gender: - Male/Female");
-                    String gender = sc.nextLine();
+                    String gender = Validator.getValidatedGender(sc);
                     
                     //select employee role
                     System.out.println("Select a role for the employee: ");
